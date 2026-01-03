@@ -1,0 +1,29 @@
+{
+  "name": "TuntiPay",
+  "type": "Payment Platform (Not a Bank)",
+  "owner": "Tuntisoft Foundation",
+  "non_profit": true,
+  "currency": "USD",
+  "supported_languages": ["en", "my"],
+  "payment_providers": ["Stripe", "PayPal"],
+  "features": {
+    "offline_first": true,
+    "no_cookies": true,
+    "no_ads": true,
+    "no_login_required": true
+  },
+  "sample_supports": [
+    {
+      "id": "SUP-001",
+      "title": "Support Open-source Tool",
+      "amount": 5,
+      "currency": "USD"
+    },
+    {
+      "id": "SUP-002",
+      "title": "Support Public Library",
+      "amount": 10,
+      "currency": "USD"
+    }
+  ]
+}

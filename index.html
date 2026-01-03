@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TuntiPay — Support Knowledge</title>
+
+<style>
+:root{
+  --bg:#0f172a;
+  --card:#020617;
+  --accent:#22c55e;
+  --muted:#94a3b8;
+  font-family: system-ui, sans-serif;
+}
+body{
+  margin:0;
+  background:linear-gradient(180deg,#020617,#020617);
+  color:#e5e7eb;
+}
+.container{
+  max-width:900px;
+  margin:auto;
+  padding:20px;
+}
+header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+.logo{
+  font-weight:800;
+  font-size:20px;
+  color:var(--accent);
+}
+.card{
+  background:rgba(255,255,255,0.03);
+  border-radius:14px;
+  padding:16px;
+  margin-top:16px;
+}
+button{
+  background:var(--accent);
+  color:#022c22;
+  border:none;
+  padding:10px 14px;
+  border-radius:10px;
+  font-weight:600;
+  cursor:pointer;
+}
+button.ghost{
+  background:transparent;
+  color:var(--accent);
+  border:1px solid rgba(255,255,255,0.1);
+}
+.support{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-top:10px;
+}
+footer{
+  margin-top:24px;
+  text-align:center;
+  color:var(--muted);
+  font-size:13px;
+}
+</style>
+</head>
+
+<body>
+<div class="container">
+
+<header>
+  <div class="logo">TuntiPay</div>
+  <div class="muted">Not a Bank · No Cookies · Offline-first</div>
+</header>
+
+<div class="card">
+  <h2>Support Knowledge & Software</h2>
+  <p class="muted">
+    This is a payment facilitation platform, not a bank.  
+    No login required. No ads. No tracking.
+  </p>
+
+  <div class="support">
+    <div>
+      <strong>Support Open-source Tools</strong><br>
+      <span class="muted">$5 USD</span>
+    </div>
+    <button onclick="pay(5)">Support</button>
+  </div>
+
+  <div class="support">
+    <div>
+      <strong>Support Public Library</strong><br>
+      <span class="muted">$10 USD</span>
+    </div>
+    <button onclick="pay(10)">Support</button>
+  </div>
+</div>
+
+<div class="card">
+  <h3>Offline Status</h3>
+  <p id="status" class="muted">Checking…</p>
+  <button class="ghost" onclick="downloadReceipt()">Download Receipt</button>
+</div>
+
+<footer>
+  © Tuntisoft Foundation · Payment Platform (Not a Bank)
+</footer>
+
+</div>
+
+<script>
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('sw.js');
+}
+
+function updateStatus(){
+  document.getElementById('status').textContent =
+    navigator.onLine ? 'Online mode' : 'Offline mode (ready)';
+}
+window.addEventListener('online', updateStatus);
+window.addEventListener('offline', updateStatus);
+updateStatus();
+
+function pay(amount){
+  const receipt = {
+    amount: amount,
+    currency: "USD",
+    time: new Date().toISOString(),
+    status: "PENDING (Demo)"
+  };
+  localStorage.setItem('tuntipay_last_receipt', JSON.stringify(receipt));
+  alert("Demo payment created.\nAmount: $" + amount);
+}
+
+function downloadReceipt(){
+  const data = localStorage.getItem('tuntipay_last_receipt');
+  if(!data){
+    alert("No receipt found");
+    return;
+  }
+  const blob = new Blob([data], {type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = "tuntipay_receipt.json";
+  a.click();
+}
+</script>
+
+</body>
+</html>
